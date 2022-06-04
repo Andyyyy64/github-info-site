@@ -1,11 +1,42 @@
 <script>
+import axios from "axios"
 export default {
   data() {
     return {
+      GitName: null,
+      inputname: ""
+    }
+  },
+  methods: {
+    async getgitinfo() {
+      const url = "https://api.github.com/users"
+      const Response = await axios.get(url)
+      this.GitName = Response.data
+      console.log(JSON.stringify(Response.data))
 
+    },
+    filterdname: () => {
+      const filtered = [];
+      for (let i in this.GitName) {
+        const Name = this.GitName[i];
+        if (Name.GitName.indexOf(this.inputname) !== -1) {
+          filtered.push(Name);
+        }
+      }
+      return filtered;
+    }
+
+  },
+  mounted: () => {
+    this.getgitinfo();
+  },
+  computed:{
+    filterdUsers:()=>{
+      return this.filterdname();
     }
   }
 }
+
 </script>
 
 <template>
@@ -17,12 +48,14 @@ export default {
     </header>
     <main>
       <div class="NameInfo">
-        <input type="text" class="typename" placeholder="Please enter a name">
-        <button class="searchinfo">Search</button>
+        <input type="text" class="typename" v-model="inputname" placeholder="Please enter a name">
+        <button class="searchinfo" @click="getgitinfo">Search</button>
       </div>
     </main>
     <div class="contents">
-
+      <ul>
+        <li v-for="(Name,index) in filterdname" :key="index">{{Name.GitName}}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -30,7 +63,7 @@ export default {
 <style>
 * {
   margin: 0 auto;
-  font-family: "Avenir Next", "Hiragino Kaku Gothic ProN W3", sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 
 .maintitle {
@@ -48,7 +81,8 @@ main {
   height: 90px;
   border-bottom: 3px solid black;
 }
-.contents{
+
+.contents {
   background-color: #156766;
   height: 500px;
 }
