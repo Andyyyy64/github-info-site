@@ -63,7 +63,8 @@ export default {
 <style>
 * {
   margin: 0 auto;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family:"courier","Roboto Mono", "Vazirmatn";
+  font-weight: bold;
 }
 
 .maintitle {
@@ -115,7 +116,7 @@ main {
 .fa {
   text-align: left;
   position: relative;
-  bottom: 60px;
+  bottom: 48px;
   left: 5px;
 }
 </style>
