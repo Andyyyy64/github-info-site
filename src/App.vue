@@ -3,23 +3,27 @@ import axios from "axios"
 export default {
   data() {
     return {
-      GitName: null,
+      Names: null,
       inputname: ""
     }
   },
   methods: {
     async getgitinfo() {
-      const url = "https://api.github.com/users"
-      const Response = await axios.get(url)
-      this.GitName = Response.data
-      console.log(JSON.stringify(Response.data))
-
+      const url = `https://api.github.com/users/${this.inputname}`
+      axios.get(url)
+        .then(Response => {
+          this.Names = Response.data
+        })
+        .catch(err => {
+          alert(err.statusText)
+        })
+        console.log(JSON.stringify(this.Names))
     },
     filterdname: () => {
       const filtered = [];
-      for (let i in this.GitName) {
-        const Name = this.GitName[i];
-        if (Name.GitName.indexOf(this.inputname) !== -1) {
+      for (let i in this.Names) {
+        const Name = this.Names[i];
+        if (Name.Names.indexOf(this.inputname) !== -1) {
           filtered.push(Name);
         }
       }
@@ -30,8 +34,8 @@ export default {
   mounted: () => {
     this.getgitinfo();
   },
-  computed:{
-    filterdUsers:()=>{
+  computed: {
+    filterdUsers: () => {
       return this.filterdname();
     }
   }
@@ -53,9 +57,7 @@ export default {
       </div>
     </main>
     <div class="contents">
-      <ul>
-        <li v-for="(Name,index) in filterdname" :key="index">{{Name.GitName}}</li>
-      </ul>
+
     </div>
   </div>
 </template>
@@ -63,12 +65,15 @@ export default {
 <style>
 * {
   margin: 0 auto;
-  font-family:"courier","Roboto Mono", "Vazirmatn";
+  font-family: "courier", "Roboto Mono", "Vazirmatn";
   font-weight: bold;
 }
 
 .maintitle {
   text-align: center;
+  letter-spacing: -0.5px;
+  position: relative;
+  top: px;
 }
 
 header {
