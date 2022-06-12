@@ -4,7 +4,11 @@ export default {
   data() {
     return {
       Names: null,
-      inputname: ""
+      inputname: "",
+      infoFlg: "",
+      Followers: "",
+      Followering: "",
+      repos:[1,2,3]
     }
   },
   methods: {
@@ -17,7 +21,9 @@ export default {
         .catch(err => {
           alert(err.statusText)
         })
-        console.log(JSON.stringify(this.Names))
+      console.log(JSON.stringify(this.Names))
+      this.infoFlg = true
+
     },
     filterdname: () => {
       const filtered = [];
@@ -31,6 +37,7 @@ export default {
     }
 
   },
+
   mounted: () => {
     this.getgitinfo();
   },
@@ -57,7 +64,18 @@ export default {
       </div>
     </main>
     <div class="contents">
-
+      <img v-if="infoFlg" class="infoimg" src="https://avatars.githubusercontent.com/u/105579829?v=4">
+      <div v-if="infoFlg" class="userinfo">
+        <h2>{{ this.inputname }}</h2>
+        <ul>
+          <li>{{ this.Followers }} followers</li>
+          <li>{{ this.Followering }} followering</li>
+        </ul>
+        <h3>repos</h3>
+        <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
+          <li>{{reponame}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -123,5 +141,45 @@ main {
   position: relative;
   bottom: 48px;
   left: 5px;
+}
+
+.infoimg {
+  width: 300px;
+  position: relative;
+  left: 100px;
+  top: 30px;
+  border: 2px solid rgb(56, 11, 11);
+}
+
+h2 {
+  text-align: center;
+  position: relative;
+  bottom: 250px;
+  color: #b8c1c1;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+ul {
+  position: relative;
+  text-align: center;
+  bottom: 250px;
+  list-style: none;
+  margin-right: 40px;
+}
+h3{
+  text-align: center;
+  position: relative;
+  bottom: 225px;
+  color: #b8c1c1;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+.repositori{
+  position: relative;
+  text-align: center;
+  bottom: 225px;
+  list-style: none;
+  margin-right: 40px;
 }
 </style>
