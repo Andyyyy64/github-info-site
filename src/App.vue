@@ -8,54 +8,43 @@ export default {
       infoFlg: "",
       Followers: "",
       Following: "",
-      repos: ""
+      repos: "",
     }
   },
   methods: {
     async getgitinfo() {
+      const image = document.getElementById('image')
       const url = `https://api.github.com/users/${this.inputname}`
       axios.get(url)
         .then(Response => {
           this.Names = Response.data
           this.Followers = Response.data.followers
           this.Following = Response.data.following
+          image.src = this.Names["avatar_url"]
         })
         .catch(err => {
-          alert(err.statusText)
+          alert("ユーザーは存在しません", err.statusText)
         })
+      console.log(JSON.stringify(this.Names["avatar_url"]))
       axios.get(`https://api.github.com/users/${this.inputname}/repos`)
         .then(Response => {
           this.repos = Response.data
-          const reposName = this.repos.map((_, index) =>{
-            return{
-              repo:Response.data[index].name
+          const reposName = this.repos.map((_, index) => {
+            return {
+              repo: Response.data[index].name
             }
           })
           this.repos = reposName
         })
-      console.log(JSON.stringify(this.repos))
       this.infoFlg = true
+      this.$nextTick(function () {
+        document.getElementById("typename").focus()
+      })
     },
-    filterdname: () => {
-      const filtered = [];
-      for (let i in this.Names) {
-        const Name = this.Names[i];
-        if (Name.Names.indexOf(this.inputname) !== -1) {
-          filtered.push(Name);
-        }
-      }
-      return filtered;
-    }
   },
-
   mounted: () => {
     this.getgitinfo();
   },
-  computed: {
-    filterdUsers: () => {
-      return this.filterdname();
-    }
-  }
 }
 
 </script>
@@ -74,7 +63,7 @@ export default {
       </div>
     </main>
     <div class="contents">
-      <img v-if="infoFlg" class="infoimg" src="https://avatars.githubusercontent.com/u/105579829?v=4">
+      <img v-if="infoFlg" class="infoimg" id="image" src="image.src">
       <div v-if="infoFlg" class="userinfo">
         <h2>{{ this.inputname }}</h2>
         <ul>
@@ -101,7 +90,6 @@ export default {
   text-align: center;
   letter-spacing: -0.5px;
   position: relative;
-  top: px;
 }
 
 header {
