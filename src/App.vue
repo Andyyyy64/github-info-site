@@ -8,7 +8,7 @@ export default {
       infoFlg: "",
       Followers: "",
       Following: "",
-      repos:""
+      repos: ""
     }
   },
   methods: {
@@ -19,12 +19,21 @@ export default {
           this.Names = Response.data
           this.Followers = Response.data.followers
           this.Following = Response.data.following
-          this.repos = Response.data.repos_url
         })
         .catch(err => {
           alert(err.statusText)
         })
-      console.log(JSON.stringify(this.Names.repos_url))
+      axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+        .then(Response => {
+          this.repos = Response.data
+          const reposName = this.repos.map((_, index) =>{
+            return{
+              repo:Response.data[index].name
+            }
+          })
+          this.repos = reposName
+        })
+      console.log(JSON.stringify(this.repos))
       this.infoFlg = true
     },
     filterdname: () => {
@@ -70,11 +79,11 @@ export default {
         <h2>{{ this.inputname }}</h2>
         <ul>
           <li>{{ this.Followers }} followers</li>
-          <li>{{ this.Following }} followering</li>
+          <li>{{ this.Following }} following</li>
         </ul>
         <h3>repos</h3>
         <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
-          <li>{{reponame}}</li>
+          {{ reponame }}
         </ul>
       </div>
     </div>
@@ -168,7 +177,8 @@ ul {
   list-style: none;
   margin-right: 40px;
 }
-h3{
+
+h3 {
   text-align: center;
   position: relative;
   bottom: 225px;
@@ -176,7 +186,8 @@ h3{
   font-size: 40px;
   margin-bottom: 10px;
 }
-.repositori{
+
+.repositori {
   position: relative;
   text-align: center;
   bottom: 225px;
