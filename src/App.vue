@@ -7,8 +7,8 @@ export default {
       inputname: "",
       infoFlg: "",
       Followers: "",
-      Followering: "",
-      repos:[1,2,3]
+      Following: "",
+      repos:""
     }
   },
   methods: {
@@ -17,13 +17,15 @@ export default {
       axios.get(url)
         .then(Response => {
           this.Names = Response.data
+          this.Followers = Response.data.followers
+          this.Following = Response.data.following
+          this.repos = Response.data.repos_url
         })
         .catch(err => {
           alert(err.statusText)
         })
-      console.log(JSON.stringify(this.Names))
+      console.log(JSON.stringify(this.Names.repos_url))
       this.infoFlg = true
-
     },
     filterdname: () => {
       const filtered = [];
@@ -35,7 +37,6 @@ export default {
       }
       return filtered;
     }
-
   },
 
   mounted: () => {
@@ -69,7 +70,7 @@ export default {
         <h2>{{ this.inputname }}</h2>
         <ul>
           <li>{{ this.Followers }} followers</li>
-          <li>{{ this.Followering }} followering</li>
+          <li>{{ this.Following }} followering</li>
         </ul>
         <h3>repos</h3>
         <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
