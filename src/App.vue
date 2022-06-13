@@ -5,40 +5,39 @@ export default {
     return {
       Names: null,
       inputname: "",
-      infoFlg: "",
       Followers: "",
       Following: "",
       repos: "",
+      loading: true
     }
   },
   methods: {
     async getgitinfo() {
       const image = document.getElementById('image')
       const url = `https://api.github.com/users/${this.inputname}`
-      axios.get(url)
+      await axios.get(url)
         .then(Response => {
+          this.loading = false
           this.Names = Response.data
           this.Followers = Response.data.followers
           this.Following = Response.data.following
           image.src = this.Names["avatar_url"]
+          axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+            .then(Response => {
+              this.repos = Response.data
+              const reposName = this.repos.map((_, index) => {
+                return {
+                  repo : Response.data[index].name
+                }
+              })
+              this.repos = reposName
+            })
         })
         .catch(err => {
-          alert("ユーザーは存在しません", err.statusText)
+         alert("ユーザーは存在しません", err.statusText)
         })
-      console.log(JSON.stringify(this.Names["avatar_url"]))
-      axios.get(`https://api.github.com/users/${this.inputname}/repos`)
-        .then(Response => {
-          this.repos = Response.data
-          const reposName = this.repos.map((_, index) => {
-            return {
-              repo: Response.data[index].name
-            }
-          })
-          this.repos = reposName
-        })
-      this.infoFlg = true
       this.$nextTick(function () {
-        document.getElementById("typename").focus()
+        document.getElementById("gitnameinfo").focus()
       })
     },
   },
@@ -58,13 +57,15 @@ export default {
     </header>
     <main>
       <div class="NameInfo">
-        <input type="text" class="typename" v-model="inputname" placeholder="Please enter a name">
+        <input type="text" id="gitnameinfo" class="typename" v-model="inputname" placeholder="Please enter a name">
         <button class="searchinfo" @click="getgitinfo">Search</button>
       </div>
     </main>
+    <div v-show="loading" class="loader"></div>
     <div class="contents">
-      <img v-if="infoFlg" class="infoimg" id="image" src="image.src">
-      <div v-if="infoFlg" class="userinfo">
+      
+      <img v-if="!loading" class="infoimg" id="image" src="image.src">
+      <div v-if="!loading" class="userinfo">
         <h2>{{ this.inputname }}</h2>
         <ul>
           <li>{{ this.Followers }} followers</li>
@@ -72,7 +73,7 @@ export default {
         </ul>
         <h3>repos</h3>
         <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
-          {{ reponame }}
+          {{ reponame.repo }}
         </ul>
       </div>
     </div>
@@ -90,6 +91,7 @@ export default {
   text-align: center;
   letter-spacing: -0.5px;
   position: relative;
+  top: 9px;
 }
 
 header {
@@ -106,7 +108,8 @@ main {
 
 .contents {
   background-color: #156766;
-  height: 500px;
+  height: 800px;
+
 }
 
 .NameInfo {
@@ -124,6 +127,7 @@ main {
   font-size: 1.2em;
   position: relative;
   bottom: 2px;
+  cursor: pointer;
 }
 
 .mt-10 {
@@ -153,7 +157,7 @@ h2 {
   text-align: center;
   position: relative;
   bottom: 250px;
-  color: #b8c1c1;
+  color: #e4efef;
   font-size: 40px;
   margin-bottom: 10px;
 }
@@ -170,7 +174,7 @@ h3 {
   text-align: center;
   position: relative;
   bottom: 225px;
-  color: #b8c1c1;
+  color: #e4efef;
   font-size: 40px;
   margin-bottom: 10px;
 }
