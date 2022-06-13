@@ -8,16 +8,20 @@ export default {
       Followers: "",
       Following: "",
       repos: "",
-      loading: true
+      infoFlg: "",
+      message: ""
     }
   },
   methods: {
     async getgitinfo() {
+
+
       const image = document.getElementById('image')
       const url = `https://api.github.com/users/${this.inputname}`
       await axios.get(url)
         .then(Response => {
-          this.loading = false
+          this.message = "Loading..."
+          this.infoFlg = true
           this.Names = Response.data
           this.Followers = Response.data.followers
           this.Following = Response.data.following
@@ -27,23 +31,30 @@ export default {
               this.repos = Response.data
               const reposName = this.repos.map((_, index) => {
                 return {
-                  repo : Response.data[index].name
+                  repo: Response.data[index].name
                 }
               })
               this.repos = reposName
             })
         })
         .catch(err => {
-         alert("ユーザーは存在しません", err.statusText)
+          alert("ユーザーは存在しません", err.statusText)
         })
-      this.$nextTick(function () {
-        document.getElementById("gitnameinfo").focus()
-      })
+
+        .finally(() => {
+          
+          this.message = ""
+        })
     },
   },
   mounted: () => {
     this.getgitinfo();
   },
+  watch: {
+    inputname: function () {
+      this.infoFlg = false
+    }
+  }
 }
 
 </script>
@@ -61,11 +72,10 @@ export default {
         <button class="searchinfo" @click="getgitinfo">Search</button>
       </div>
     </main>
-    <div v-show="loading" class="loader"></div>
+    <div class="loading">{{ message }}</div>
     <div class="contents">
-      
-      <img v-if="!loading" class="infoimg" id="image" src="image.src">
-      <div v-if="!loading" class="userinfo">
+      <img v-if="infoFlg" class="infoimg" id="image" src="image.src">
+      <div v-if="infoFlg" class="userinfo">
         <h2>{{ this.inputname }}</h2>
         <ul>
           <li>{{ this.Followers }} followers</li>
@@ -104,6 +114,13 @@ main {
   background-color: #1f938f;
   height: 90px;
   border-bottom: 3px solid black;
+}
+
+.loading {
+  background-color: #156766;
+  text-align: center;
+  font-size: 50px;
+  padding-top: 50px;
 }
 
 .contents {
