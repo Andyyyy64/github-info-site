@@ -26,7 +26,6 @@ export default {
           this.image = this.Names["avatar_url"]
         })
         .catch(err => {
-          // テスト用にconsole.log
           alert("ユーザーが存在しません", err);
         })
       await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
