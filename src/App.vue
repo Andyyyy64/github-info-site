@@ -3,30 +3,31 @@ import axios from "axios"
 export default {
   data() {
     return {
-      Names: null,
+      Names: "",
       inputname: "",
       Followers: "",
       Following: "",
       repos: "",
       infoFlg: "",
-      message: ""
+      message: "",
+      image: "",
     }
   },
   methods: {
     async getgitinfo() {
-      const image = document.getElementById('image')
+      this.message = "Loading..."
       const url = `https://api.github.com/users/${this.inputname}`
       await axios.get(url)
         .then(Response => {
-          this.message = "Loading..."
           this.infoFlg = true
           this.Names = Response.data
           this.Followers = Response.data.followers
           this.Following = Response.data.following
-          image.src = this.Names["avatar_url"]
+          this.image = this.Names["avatar_url"]
         })
         .catch(err => {
-          alert("ユーザーが存在しません",err);
+          // テスト用にconsole.log
+          alert("ユーザーが存在しません", err);
         })
       await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
         .then(Response => {
@@ -38,17 +39,10 @@ export default {
           })
           this.repos = reposName
         })
-
         .finally(() => {
           this.message = ""
         })
     },
-  },
-  mounted: () => {
-    this.getgitinfo();
-    this.$nextTick(function () {
-      document.getElementById("gitnameinfo").focus()
-    })
   },
   watch: {
     inputname: function () {
@@ -56,7 +50,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <template>
@@ -68,13 +61,13 @@ export default {
     </header>
     <main>
       <div class="NameInfo">
-        <input type="text" id="gitnameinfo" class="typename" v-model="inputname" placeholder="Please enter a name">
+        <input type="text" class="typename" v-model="inputname" placeholder="Please enter a name">
         <button class="searchinfo" @click="getgitinfo">Search</button>
       </div>
     </main>
     <div class="loading">{{ message }}</div>
     <div class="contents">
-      <img v-if="infoFlg" class="infoimg" id="image" src="image.src">
+      <img v-if="infoFlg" class="infoimg" id="image" :src="this.image">
       <div v-if="infoFlg" class="userinfo">
         <h2>{{ this.inputname }}</h2>
         <ul>
