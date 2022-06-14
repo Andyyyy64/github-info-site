@@ -14,8 +14,6 @@ export default {
   },
   methods: {
     async getgitinfo() {
-
-
       const image = document.getElementById('image')
       const url = `https://api.github.com/users/${this.inputname}`
       await axios.get(url)
@@ -26,29 +24,31 @@ export default {
           this.Followers = Response.data.followers
           this.Following = Response.data.following
           image.src = this.Names["avatar_url"]
-          axios.get(`https://api.github.com/users/${this.inputname}/repos`)
-            .then(Response => {
-              this.repos = Response.data
-              const reposName = this.repos.map((_, index) => {
-                return {
-                  repo: Response.data[index].name
-                }
-              })
-              this.repos = reposName
-            })
         })
         .catch(err => {
-          alert("ユーザーは存在しません", err.statusText)
+          alert("ユーザーが存在しません",err);
+        })
+      await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+        .then(Response => {
+          this.repos = Response.data
+          const reposName = this.repos.map((_, index) => {
+            return {
+              repo: Response.data[index].name
+            }
+          })
+          this.repos = reposName
         })
 
         .finally(() => {
-          
           this.message = ""
         })
     },
   },
   mounted: () => {
     this.getgitinfo();
+    this.$nextTick(function () {
+      document.getElementById("gitnameinfo").focus()
+    })
   },
   watch: {
     inputname: function () {
@@ -105,7 +105,7 @@ export default {
 }
 
 header {
-  background-color: #16e0d9;
+  background-color: rgb(26, 20, 20);
   color: #fff;
   height: 55px;
 }
