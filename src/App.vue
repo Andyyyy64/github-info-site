@@ -74,7 +74,7 @@ export default {
           <li>{{ this.Following }} following</li>
         </ul>
         <h3>repos</h3>
-        <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
+        <ul class="repozitori" v-for="(reponame, index) in repos" :key="index">
           {{ reponame.repo }}
         </ul>
       </div>
@@ -188,7 +188,7 @@ h3 {
   margin-bottom: 10px;
 }
 
-.repositori {
+.repozitori {
   position: relative;
   text-align: center;
   bottom: 225px;
