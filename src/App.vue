@@ -17,30 +17,31 @@ export default {
     async getgitinfo() {
       this.message = "Loading..."
       const url = `https://api.github.com/users/${this.inputname}`
-      await axios.get(url)
-        .then(Response => {
-          this.infoFlg = true
-          this.Names = Response.data
-          this.Followers = Response.data.followers
-          this.Following = Response.data.following
-          this.image = this.Names["avatar_url"]
-        })
-        .catch(err => {
-          alert("ユーザーが存在しません", err);
-        })
-      await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
-        .then(Response => {
-          this.repos = Response.data
-          const reposName = this.repos.map((_, index) => {
-            return {
-              repo: Response.data[index].name
-            }
+      try {
+        await axios.get(url)
+          .then(Response => {
+            this.infoFlg = true
+            this.Names = Response.data
+            this.Followers = Response.data.followers
+            this.Following = Response.data.following
+            this.image = this.Names["avatar_url"]
           })
-          this.repos = reposName
-        })
-        .finally(() => {
-          this.message = ""
-        })
+
+        await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+          .then(Response => {
+            this.repos = Response.data
+            const reposName = this.repos.map((_, index) => {
+              return {
+                repo: Response.data[index].name
+              }
+            })
+            this.repos = reposName
+          })
+      } catch (err) {
+        alert("ユーザーが存在しません", err);
+      } finally {
+        this.message = ""
+      }
     },
   },
   watch: {
