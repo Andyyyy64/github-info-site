@@ -32,9 +32,7 @@ export default {
         .then(Response => {
           this.repos = Response.data
           const reposName = this.repos.map((_, index) => {
-            return {
-              repo: Response.data[index].name
-            }
+            return Response.data[index].name
           })
           this.repos = reposName
         })
@@ -75,7 +73,7 @@ export default {
         </ul>
         <h3>repos</h3>
         <ul class="repositori" v-for="(reponame, index) in repos" :key="index">
-          {{ reponame.repo }}
+          {{ reponame }}
         </ul>
       </div>
     </div>
