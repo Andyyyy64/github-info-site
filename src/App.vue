@@ -28,7 +28,7 @@ export default {
         .catch(err => {
           alert("ユーザーが存在しません", err);
         })
-       axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+      const data2 = await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
         .then(Response => {
           this.repos = Response.data
           const reposName = this.repos.map((_, index) => {
@@ -41,7 +41,7 @@ export default {
         .finally(() => {
           this.message = ""
         })
-        return data1
+      return data1,data2
     },
   },
   watch: {
