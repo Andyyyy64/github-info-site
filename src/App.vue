@@ -17,7 +17,7 @@ export default {
     async getgitinfo() {
       this.message = "Loading..."
       const url = `https://api.github.com/users/${this.inputname}`
-      await axios.get(url)
+      const data1 = await axios.get(url)
         .then(Response => {
           this.infoFlg = true
           this.Names = Response.data
@@ -28,7 +28,7 @@ export default {
         .catch(err => {
           alert("ユーザーが存在しません", err);
         })
-      await axios.get(`https://api.github.com/users/${this.inputname}/repos`)
+       axios.get(`https://api.github.com/users/${this.inputname}/repos`)
         .then(Response => {
           this.repos = Response.data
           const reposName = this.repos.map((_, index) => {
@@ -41,6 +41,7 @@ export default {
         .finally(() => {
           this.message = ""
         })
+        return data1
     },
   },
   watch: {
