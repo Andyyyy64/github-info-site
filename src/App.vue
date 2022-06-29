@@ -56,7 +56,7 @@ export default {
   <div class="contaier">
     <header>
       <h1 class="maintitle mb-10">Github Infomation Site</h1>
-      <span class="fa fa-github fa-3x"></span>
+      <a href="https://github.com/Andyyyy64" class="gitjump"><span class="fa fa-github fa-3x"></span></a>
     </header>
     <main>
       <div class="NameInfo">
@@ -83,116 +83,5 @@ export default {
 </template>
 
 <style>
-* {
-  margin: 0 auto;
-  font-family: "courier", "Roboto Mono", "Vazirmatn";
-  font-weight: bold;
-}
-
-.maintitle {
-  text-align: center;
-  letter-spacing: -0.5px;
-  position: relative;
-  top: 9px;
-}
-
-header {
-  background-color: rgb(26, 20, 20);
-  color: #fff;
-  height: 55px;
-}
-
-main {
-  background-color: #1f938f;
-  height: 90px;
-  border-bottom: 3px solid black;
-}
-
-.loading {
-  background-color: #156766;
-  text-align: center;
-  font-size: 50px;
-  padding-top: 50px;
-}
-
-.contents {
-  background-color: #156766;
-  height: 800px;
-
-}
-
-.NameInfo {
-  display: inline-block;
-  margin-left: 460px;
-  margin-top: 20px;
-}
-
-.typename {
-  font-size: 1.5em;
-  margin-right: 20px;
-}
-
-.searchinfo {
-  font-size: 1.2em;
-  position: relative;
-  bottom: 2px;
-  cursor: pointer;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.mb-10 {
-  margin-bottom: 10px;
-}
-
-.fa {
-  text-align: left;
-  position: relative;
-  bottom: 48px;
-  left: 5px;
-}
-
-.infoimg {
-  width: 300px;
-  position: relative;
-  left: 100px;
-  top: 30px;
-  border: 2px solid rgb(56, 11, 11);
-}
-
-h2 {
-  text-align: center;
-  position: relative;
-  bottom: 250px;
-  color: #e4efef;
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-ul {
-  position: relative;
-  text-align: center;
-  bottom: 250px;
-  list-style: none;
-  margin-right: 40px;
-}
-
-h3 {
-  text-align: center;
-  position: relative;
-  bottom: 225px;
-  color: #e4efef;
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-.repozitori {
-  position: relative;
-  text-align: center;
-  bottom: 225px;
-  list-style: none;
-  margin-right: 40px;
-}
+@import "../css/mainstyle.css"
 </style>
